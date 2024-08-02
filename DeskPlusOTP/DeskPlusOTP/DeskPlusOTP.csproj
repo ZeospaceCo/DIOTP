@@ -71,6 +71,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="PopOTP.js" />
+    <Content Include="PopOTP.aspx" />
     <Content Include="LoadOTP.aspx" />
     <Content Include="LoadOTP.js" />
     <Content Include="OTP.aspx" />
@@ -82,6 +84,13 @@
     <Compile Include="EncryptionHelper.cs" />
     <Compile Include="ImageHandler.ashx.cs">
       <DependentUpon>ImageHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="PopOTP.aspx.cs">
+      <DependentUpon>PopOTP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PopOTP.aspx.designer.cs">
+      <DependentUpon>PopOTP.aspx</DependentUpon>
     </Compile>
     <Compile Include="LoadOTP.aspx.cs">
       <DependentUpon>LoadOTP.aspx</DependentUpon>
