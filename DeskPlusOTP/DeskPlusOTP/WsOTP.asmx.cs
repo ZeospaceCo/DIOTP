@@ -21,13 +21,14 @@ namespace DeskPlusOTP
     [System.Web.Script.Services.ScriptService]
     public class WsOTP : System.Web.Services.WebService
     {
-        string con = "Data Source=ZEOSPACE-20;Initial Catalog=SiteDIEIP51;Persist Security Info=True;User ID=deskpluseip;Password=deskplus";
+        //string con = "Data Source=ZEOSPACE-20;Initial Catalog=SiteDIEIP51;Persist Security Info=True;User ID=deskpluseip;Password=deskplus";
+        string con = "Data Source=newdbsvr,44733;Initial Catalog=DeskPlusEIP;Persist Security Info=True;User ID=deskpluseip;Password=desk+e1p_20220706";
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
-        [WebMethod(EnableSession = true)]
+         /// <summary>
+         /// 
+         /// </summary>
+         /// <returns></returns>
+         [WebMethod(EnableSession = true)]
         [System.Web.Script.Services.ScriptMethod(UseHttpGet = false)]
         public string UpdOTP(int companyID, string loginID, string random, string base32Secret)
         {
@@ -140,6 +141,5 @@ namespace DeskPlusOTP
                 }
             }
         }
-
     }
 }

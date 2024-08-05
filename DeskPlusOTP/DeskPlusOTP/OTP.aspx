@@ -15,7 +15,7 @@
         var base32Secret = "<%=base32Secret%>";
 
     </script>
-    <script type="text/javascript" src="OTP.js"></script>
+    <script type="text/javascript" src="OTP.js?v=1"></script>
 </head>
 <body>  
     <form id="form1" runat="server">

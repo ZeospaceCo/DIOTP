@@ -43,36 +43,39 @@ namespace DeskPlusOTP
             companyID = GetDecryptParam("cID", "0");
             loginID = GetDecryptParam("lID", "");
 
-            // 비밀 키 생성
-            var secretKey = KeyGeneration.GenerateRandomKey(20);
-            base32Secret = Base32Encoding.ToString(secretKey);
-
-            totp.InnerText = base32Secret;
-
-            // TOTP 생성
-            string issuer = "DIGW"; //회사이름
-            string totpUrl = $"otpauth://totp/{issuer}:{loginID}?secret={base32Secret}&issuer={issuer}&digits=6&period=30";
-
-            // QR 코드 생성
-            QRCodeGenerator qrGenerator = new QRCodeGenerator();
-            QRCodeData qrCodeData = qrGenerator.CreateQrCode(totpUrl, QRCodeGenerator.ECCLevel.Q);
-            QRCode qrCode = new QRCode(qrCodeData);
-
-            using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
+            if (!String.IsNullOrEmpty(loginID))
             {
-                string filePath = "/DeskPlusOTP/Qrcode/" + loginID + "_otpqrcode.png";
-                FileInfo file = new FileInfo(Server.MapPath(filePath));
+                // 비밀 키 생성
+                var secretKey = KeyGeneration.GenerateRandomKey(20);
+                base32Secret = Base32Encoding.ToString(secretKey);
 
-                if (file.Exists)
+                totp.InnerText = base32Secret;
+
+                // TOTP 생성
+                string issuer = "DIGW"; //회사이름
+                string totpUrl = $"otpauth://totp/{issuer}:{loginID}?secret={base32Secret}&issuer={issuer}&digits=6&period=30";
+
+                // QR 코드 생성
+                QRCodeGenerator qrGenerator = new QRCodeGenerator();
+                QRCodeData qrCodeData = qrGenerator.CreateQrCode(totpUrl, QRCodeGenerator.ECCLevel.Q);
+                QRCode qrCode = new QRCode(qrCodeData);
+
+                using (Bitmap qrCodeImage = qrCode.GetGraphic(20))
                 {
-                    file.Delete();
+                    string filePath = "/DeskPlusOTP/Qrcode/" + loginID + "_otpqrcode.png";
+                    FileInfo file = new FileInfo(Server.MapPath(filePath));
+
+                    if (file.Exists)
+                    {
+                        file.Delete();
+                    }
+
+                    HttpContext context = HttpContext.Current;
+                    string filePath2 = context.Server.MapPath(filePath);
+                    qrCodeImage.Save(filePath2);
+
+                    ImgQR = "ImageHandler.ashx?path=" + Server.UrlEncode(EncryptionHelper.Encrypt(filePath));
                 }
-
-                HttpContext context = HttpContext.Current;
-                string filePath2 = context.Server.MapPath(filePath);
-                qrCodeImage.Save(filePath2);
-
-                ImgQR = "ImageHandler.ashx?path=" + Server.UrlEncode(EncryptionHelper.Encrypt(filePath));
             }
         }
 

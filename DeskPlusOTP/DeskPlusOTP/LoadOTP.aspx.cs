@@ -91,7 +91,8 @@ namespace DeskPlusOTP
         public DataTableReader GetOTP(string _companyID, string _loginID)
         {
             string sqlQuery = "SELECT OTP FROM DP_ACC_User WHERE CompanyID = @CompanyID AND loginID = @LoginID AND ActiveUser=1";
-            string con = "Data Source=ZEOSPACE-20;Initial Catalog=SiteDIEIP51;Persist Security Info=True;User ID=deskpluseip;Password=deskplus";
+            //string con = "Data Source=ZEOSPACE-20;Initial Catalog=SiteDIEIP51;Persist Security Info=True;User ID=deskpluseip;Password=deskplus";
+            string con = "Data Source=newdbsvr,44733;Initial Catalog=DeskPlusEIP;Persist Security Info=True;User ID=deskpluseip;Password=desk+e1p_20220706";
 
             using (var cn = new SqlConnection(con))
             {
