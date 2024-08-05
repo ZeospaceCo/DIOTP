@@ -30,7 +30,7 @@ PopOTP.ConfirmOTP = function () {
 PopOTP.SuccessOTP = function (data, status) {
 
     if (data.d == "1") {
-        alert("입력값이 일치합니다");
+        alert("입력값이 일치합니다 \n로그인 처리중입니다");
         opener.RetunOTP(data.d);
         self.close();
     }

@@ -13,7 +13,7 @@
         var loginID = "<%=loginID%>";
 
     </script>
-    <script type="text/javascript" src="PopOTP.js?v=0.5"></script>
+    <script type="text/javascript" src="PopOTP.js?v=1"></script>
 </head>
 <body>  
     <form id="form1" runat="server">
