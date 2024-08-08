@@ -7,6 +7,14 @@ $(function () {
             e.preventDefault();
             OTP.UpdOTP();
         });
+
+        $("#tbRandom").keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                OTP.UpdOTP();
+            }
+        });
+
     });
 });
 

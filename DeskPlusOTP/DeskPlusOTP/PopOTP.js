@@ -7,6 +7,13 @@ $(function () {
             e.preventDefault();
             PopOTP.ConfirmOTP();
         });
+
+        $("#tbRandom").keydown(function (e) {
+            if (e.keyCode == 13) {
+                e.preventDefault();
+                PopOTP.ConfirmOTP();
+            }
+        });
     });
 });
 

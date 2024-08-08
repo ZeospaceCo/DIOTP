@@ -107,6 +107,7 @@
       <DependentUpon>OTP.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WsException.cs" />
     <Compile Include="WsOTP.asmx.cs">
       <DependentUpon>WsOTP.asmx</DependentUpon>
       <SubType>Component</SubType>

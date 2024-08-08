@@ -13,7 +13,7 @@
         var loginID = "<%=loginID%>";
 
     </script>
-    <script type="text/javascript" src="PopOTP.js?v=1"></script>
+    <script type="text/javascript" src="PopOTP.js?v=3"></script>
 </head>
 <body>  
     <form id="form1" runat="server">
@@ -23,7 +23,7 @@
             <h1>구글 OTP 인증</h1>            
         </div>
         <div class="dotLine"></div>
-        <div class="popup_layout_style3" style="min-height:300px;height:295px;">
+        <div class="popup_layout_style3" style="min-height:250px;height:245px;">
             <table class="table_typeB" border="0" style="width:98%;" > 
 		    <caption></caption>
 		    <colgroup>

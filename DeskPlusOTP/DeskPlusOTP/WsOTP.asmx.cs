@@ -32,31 +32,39 @@ namespace DeskPlusOTP
         [System.Web.Script.Services.ScriptMethod(UseHttpGet = false)]
         public string UpdOTP(int companyID, string loginID, string random, string base32Secret)
         {
-            // TOTP 생성
-            byte[] decodedKey = Base32Encoding.ToBytes(base32Secret);
-            var totp = new Totp(decodedKey);
-
-            // 코드 검증
-            var isValid = totp.VerifyTotp(random, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
-
-            if (isValid)
+            try
             {
-                using (var cn = new SqlConnection(con))
-                {
-                    var cmd = new SqlCommand("DP_ACC_User_UpdOTP", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@CompanyID", SqlDbType.Int).Value = companyID;
-                    cmd.Parameters.Add("@LoginID", SqlDbType.NVarChar, 50).Value = loginID; ;
-                    cmd.Parameters.Add("@OTP", SqlDbType.NVarChar, 100).Value = base32Secret;
-                    cn.Open();
+                // TOTP 생성
+                byte[] decodedKey = Base32Encoding.ToBytes(base32Secret);
+                var totp = new Totp(decodedKey);
 
-                    cmd.ExecuteNonQuery();
+                // 코드 검증
+                var isValid = totp.VerifyTotp(random, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
+
+                if (isValid)
+                {
+                    using (var cn = new SqlConnection(con))
+                    {
+                        var cmd = new SqlCommand("DP_ACC_User_UpdOTP", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@CompanyID", SqlDbType.Int).Value = companyID;
+                        cmd.Parameters.Add("@LoginID", SqlDbType.NVarChar, 50).Value = loginID; ;
+                        cmd.Parameters.Add("@OTP", SqlDbType.NVarChar, 100).Value = base32Secret;
+                        cn.Open();
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return "1";
                 }
 
-                return "1";
+                return "2";
             }
-
-            return "2";
+            catch (Exception ex)
+            {
+                WsException.WriteException("UpdOTP : " + ex);
+                return "3";
+            }
         }
 
         /// <summary>
@@ -68,49 +76,58 @@ namespace DeskPlusOTP
         public string ConfirmGetOTP(int companyID, string loginID, string random)
         {
             string base32Secret = "";
-            DataTableReader dtr = GetOTP(companyID, loginID);
 
-            if (dtr != null)
+            try
             {
-                if (dtr.HasRows)
+                DataTableReader dtr = GetOTP(companyID, loginID);
+
+                if (dtr != null)
                 {
-                    while (dtr.Read())
+                    if (dtr.HasRows)
                     {
-                        base32Secret = dtr["OTP"].ToString();
+                        while (dtr.Read())
+                        {
+                            base32Secret = dtr["OTP"].ToString();
+                        }
                     }
                 }
-            }
 
-            if (String.IsNullOrEmpty(base32Secret))
-            {
-                return "3";
-            }
-
-            // TOTP 생성
-            byte[] decodedKey = Base32Encoding.ToBytes(base32Secret);
-            var totp = new Totp(decodedKey);
-
-            // 코드 검증
-            var isValid = totp.VerifyTotp(random, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
-
-            if (isValid)
-            {
-                using (var cn = new SqlConnection(con))
+                if (String.IsNullOrEmpty(base32Secret))
                 {
-                    var cmd = new SqlCommand("DP_ACC_User_UpdOTP", cn);
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.Add("@CompanyID", SqlDbType.Int).Value = companyID;
-                    cmd.Parameters.Add("@LoginID", SqlDbType.NVarChar, 50).Value = loginID; ;
-                    cmd.Parameters.Add("@OTP", SqlDbType.NVarChar, 100).Value = base32Secret;
-                    cn.Open();
-
-                    cmd.ExecuteNonQuery();
+                    return "3";
                 }
 
-                return "1";
-            }
+                // TOTP 생성
+                byte[] decodedKey = Base32Encoding.ToBytes(base32Secret);
+                var totp = new Totp(decodedKey);
 
-            return "2";
+                // 코드 검증
+                var isValid = totp.VerifyTotp(random, out long timeStepMatched, VerificationWindow.RfcSpecifiedNetworkDelay);
+
+                if (isValid)
+                {
+                    using (var cn = new SqlConnection(con))
+                    {
+                        var cmd = new SqlCommand("DP_ACC_User_UpdOTP", cn);
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.Add("@CompanyID", SqlDbType.Int).Value = companyID;
+                        cmd.Parameters.Add("@LoginID", SqlDbType.NVarChar, 50).Value = loginID; ;
+                        cmd.Parameters.Add("@OTP", SqlDbType.NVarChar, 100).Value = base32Secret;
+                        cn.Open();
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    return "1";
+                }
+
+                return "2";
+            }
+            catch (Exception ex)
+            {
+                WsException.WriteException("ConfirmGetOTP : " + ex);
+                return "4";
+            }
         }
 
 
